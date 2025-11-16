@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>YACOOK – Appli anti-gaspillage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --green: #16a34a;
+      --green-dark: #166534;
+      --green-soft: #dcfce7;
+      --bg: #f1f5f9;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #dcfce7 0, #f1f5f9 40%, #ffffff 100%);
+      color: var(--text);
+      padding: 24px 16px 48px;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo-img {
+      width: 56px;
+      height: auto;
+    }
+
+    .brand-name {
+      font-weight: 700;
+      letter-spacing: .08em;
+      font-size: 1.05rem;
+      color: var(--green-dark);
+    }
+
+    .brand-tagline {
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    .badge {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #ecfdf3;
+      border: 1px solid #bbf7d0;
+      font-size: .8rem;
+      color: var(--green-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 800px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    h1 {
+      font-size: 2.3rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    h1 span {
+      color: var(--green);
+    }
+
+    .subtitle {
+      font-size: .98rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #ecfdf3;
+      color: var(--green-dark);
+      font-size: .8rem;
+      margin-bottom: 10px;
+    }
+
+    .pill span {
+      font-weight: 600;
+    }
+
+    .section-box {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+
+    .section-box h2 {
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .section-box p {
+      font-size: .92rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .section-box ul {
+      padding-left: 18px;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+
+    .section-box ul li + li {
+      margin-top: 3px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      font-size: .78rem;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      color: #4b5563;
+    }
+
+    .chip-pro {
+      background: #fef9c3;
+      border-color: #facc15;
+      color: #854d0e;
+    }
+
+    /* Waitlist card */
+
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(22, 163, 74, 0.26);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+      margin-bottom: 14px;
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      font-size: .9rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    label {
+      font-size: .8rem;
+      color: #4b5563;
+    }
+
+    input[type="text"], input[type="email"] {
+      padding: 9px 11px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      font-size: .9rem;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.25);
+    }
+
+    .button-primary {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: .9rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      color: white;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .button-primary:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .hint {
+      font-size: .78rem;
+      color: #9ca3af;
+    }
+
+    .status {
+      font-size: .82rem;
+      margin-top: 4px;
+    }
+
+    .status.ok { color: #15803d; }
+    .status.err { color: #b91c1c; }
+
+    /* Questionnaire box */
+
+    .question-box {
+      background: var(--green-soft);
+      border-radius: 16px;
+      padding: 14px 16px;
+      border: 1px dashed #22c55e;
+      margin-top: 12px;
+    }
+
+    .question-box h2 {
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .question-box p {
+      font-size: .9rem;
+      color: #166534;
+      margin-bottom: 8px;
+    }
+
+    .btn-link {
+      display: inline-block;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid #16a34a;
+      background: #ffffff;
+      color: #166534;
+      font-size: .88rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: .78rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <img src="logo.jpg" alt="Logo YACOOK" class="brand-logo-img" />
+        <div>
+          <div class="brand-name">YACOOK</div>
+          <div class="brand-tagline">L’appli anti-gaspillage pour organiser tes repas</div>
+        </div>
+      </div>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        En développement
+      </div>
+    </header>
+
+    <main>
+      <!-- Colonne gauche : description -->
+      <section>
+        <div class="pill">
+          <span>Anti-gaspillage</span> • Organisation de repas
+        </div>
+
+        <h1>
+          Organise tes repas,<br />
+          <span>réduis le gaspillage.</span>
+        </h1>
+
+        <p class="subtitle">
+          YACOOK t’aide à mieux utiliser ce que tu as déjà dans ton frigo : planification
+          de repas, liste de courses intelligente, notifications avant la date de péremption,
+          et bientôt une version Pro avec IA pour te proposer des repas automatiquement.
+        </p>
+
+        <section class="section-box">
+          <h2>L’application YACOOK</h2>
+          <p>
+            Pensée comme une appli <strong>anti-gaspillage alimentaire</strong>, YACOOK te
+            permet de consommer ce que tu as déjà avant d’acheter plus, tout en simplifiant
+            ton organisation en cuisine.
+          </p>
+          <ul>
+            <li>📅 Déposer tes repas dans un calendrier simple et visuel</li>
+            <li>🛒 Générer une liste de courses à partir de tes repas</li>
+            <li>⏰ Recevoir des notifications avant que les aliments ne périment</li>
+            <li>📷 Scanner les produits via leur code-barres pour les ajouter rapidement</li>
+          </ul>
+          <div class="chips">
+            <div class="chip">Calendrier de repas</div>
+            <div class="chip">Liste de courses</div>
+            <div class="chip">Alertes péremption</div>
+            <div class="chip">Scan code-barres</div>
+          </div>
+        </section>
+
+        <section class="section-box">
+          <h2>YACOOK Pro (IA)</h2>
+          <p>
+            Dans la version <strong>Pro</strong>, YACOOK ira encore plus loin grâce à
+            l’intelligence artificielle :
+          </p>
+          <ul>
+            <li>🤖 Scan IA amélioré pour reconnaître les produits</li>
+            <li>🍽️ Propositions automatiques de repas en fonction de ton frigo</li>
+            <li>📆 Planning de repas généré pour toi que tu peux ajuster</li>
+          </ul>
+          <div class="chips">
+            <div class="chip chip-pro">YACOOK Pro</div>
+            <div class="chip chip-pro">IA & recommandations de repas</div>
+          </div>
+        </section>
+
+        <section class="section-box question-box">
+          <h2>Tu veux nous aider à construire YACOOK ?</h2>
+          <p>
+            On a préparé un court questionnaire pour mieux comprendre tes habitudes, ton rapport
+            au gaspillage alimentaire et ce que tu attends d’une appli comme YACOOK.
+          </p>
+          <a
+            class="btn-link"
+            href="https://docs.google.com/document/d/1FG0zuvdOwtWc3jzaC3UkP6d31gww1MG5/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Répondre au questionnaire
+          </a>
+        </section>
+      </section>
+
+      <!-- Colonne droite : waitlist -->
+      <aside>
+        <section class="card">
+          <h2>Rejoins la waitlist YACOOK</h2>
+          <p>
+            Laisse ton prénom et ton email pour être prévenu·e dès la sortie de l’application
+            et recevoir un accès anticipé.
+          </p>
+
+          <form class="form" id="waitlist-form">
+            <div class="field-group">
+              <label for="name">Prénom (optionnel)</label>
+              <input type="text" id="name" name="name" placeholder="Ton prénom" />
+            </div>
+            <div class="field-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="ton.email@example.com"
+                required
+              />
+            </div>
+            <button type="submit" class="button-primary" id="submit-btn">
+              Je veux tester YACOOK
+            </button>
+          </form>
+          <p class="hint">
+            Aucun spam, uniquement des nouvelles sur YACOOK et l’accès anticipé.
+          </p>
+          <div id="status" class="status"></div>
+        </section>
+      </aside>
+    </main>
+
+    <footer>
+      © <span id="year"></span> YACOOK – Application anti-gaspillage en cours de développement.
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // 👉 Mets ici l'URL de ton script Google Apps Script déployé en "Web app"
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwk08guUIYZ-sbf51fMf6-dy6blCAzoXoPEfak-pAn9IDKazPY-pwK_cQS944nBFemLnA/exec";
+
+    const form = document.getElementById("waitlist-form");
+    const statusEl = document.getElementById("status");
+    const submitBtn = document.getElementById("submit-btn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusEl.textContent = "";
+      statusEl.className = "status";
+      submitBtn.disabled = true;
+
+      const formData = new FormData(form);
+      const payload = {
+        name: formData.get("name") || "",
+        email: formData.get("email") || ""
+      };
+
+      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.startsWith("PASTE_")) {
+        statusEl.textContent = "Erreur de configuration : l’URL du script n’est pas renseignée.";
+        statusEl.classList.add("err");
+        submitBtn.disabled = false;
+        return;
+      }
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors", // Apps Script renvoie souvent sans CORS, donc on ne lit pas la réponse
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        statusEl.textContent = "Merci ! Ton email a bien été enregistré.";
+        statusEl.classList.add("ok");
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Une erreur est survenue. Réessaie plus tard.";
+        statusEl.classList.add("err");
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
